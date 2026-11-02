@@ -1,0 +1,122 @@
+﻿@model WebsiteBanPhuKienCauLong_65131148.Models.KhachHang
+@{
+    ViewBag.Title = "Hồ sơ khách hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+    // Lấy danh sách lịch sử đơn hàng từ ViewBag
+    var lichSuDonHang = ViewBag.LichSuDonHang as List<WebsiteBanPhuKienCauLong_65131148.Models.DonHang>;
+}
+
+<div class="d-flex align-items-center mb-4">
+    <a href="@Url.Action("DanhSachKhachHang")" class="btn btn-light border rounded-circle me-3 shadow-sm">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+    <div>
+        <h4 class="fw-bold m-0 text-dark">Hồ sơ khách hàng</h4>
+        <small class="text-muted">Mã KH: #@Model.maKhachHang</small>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body text-center pt-5">
+                <div class="mb-3">
+                    <div class="avatar-circle bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle"
+                         style="width: 80px; height: 80px; font-size: 32px;">
+                        @Model.hoTen.Substring(0, 1).ToUpper()
+                    </div>
+                </div>
+                <h5 class="fw-bold text-dark">@Model.hoTen</h5>
+                <p class="text-muted">@Model.email</p>
+
+                <hr class="my-4 opacity-25" />
+
+                <div class="text-start px-3">
+                    <div class="mb-3 d-flex align-items-center">
+                        <div class="icon-box bg-light text-primary rounded p-2 me-3">
+                            <i class="bi bi-telephone-fill"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block">Số điện thoại</small>
+                            <span class="fw-bold">@Model.sdt</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 d-flex align-items-center">
+                        <div class="icon-box bg-light text-success rounded p-2 me-3">
+                            <i class="bi bi-geo-alt-fill"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block">Địa chỉ</small>
+                            <span class="fw-bold text-break">@Model.diaChi</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8 mb-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h6 class="fw-bold m-0 text-primary"><i class="bi bi-clock-history me-2"></i>Lịch sử mua hàng (@(lichSuDonHang != null ? lichSuDonHang.Count : 0))</h6>
+            </div>
+            <div class="card-body p-0">
+                @if (lichSuDonHang != null && lichSuDonHang.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="ps-4">Mã ĐH</th>
+                                    <th>Ngày đặt</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Trạng thái</th>
+                                    <th class="text-end pe-4">Chi tiết</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var dh in lichSuDonHang)
+                                {
+                                    <tr>
+                                        <td class="ps-4 fw-bold">#@dh.maDonHang</td>
+                                        <td>@dh.ngayDat.Value.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td class="text-danger fw-bold">@((dh.tongTien ?? 0).ToString("N0")) đ</td>
+                                        <td>
+                                            @if (dh.trangThai == "Hoàn thành")
+                                            {
+                                                <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">Hoàn thành</span>
+                                            }
+                                            else if (dh.trangThai == "Đã hủy")
+                                            {
+                                                <span class="badge bg-danger bg-opacity-10 text-danger px-3 py-2 rounded-pill">Đã hủy</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-warning bg-opacity-10 text-warning px-3 py-2 rounded-pill">@dh.trangThai</span>
+                                            }
+                                        </td>
+                                        <td class="text-end pe-4">
+                                            <a href="@Url.Action("ChiTietDonHang", new { id = dh.maDonHang })" class="btn btn-sm btn-light border text-primary">
+                                                Xem <i class="bi bi-arrow-right"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-5">
+                        <i class="bi bi-cart-x fs-1 text-muted opacity-50"></i>
+                        <p class="text-muted mt-3">Khách hàng này chưa có đơn hàng nào.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

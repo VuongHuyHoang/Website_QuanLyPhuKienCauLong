@@ -1,0 +1,96 @@
+﻿@model IEnumerable<WebsiteBanPhuKienCauLong_65131148.Models.DonHang>
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card card-stat bg-primary text-white p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="mb-0 opacity-75">Tổng doanh thu</h6>
+                    <h3 class="fw-bold mb-0">@ViewBag.DoanhThu.ToString("N0") đ</h3>
+                </div>
+                <i class="bi bi-currency-dollar fs-1 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-stat bg-success text-white p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="mb-0 opacity-75">Tổng đơn hàng</h6>
+                    <h3 class="fw-bold mb-0">@ViewBag.SoLuongDonHang</h3>
+                </div>
+                <i class="bi bi-cart-check fs-1 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-stat bg-warning text-dark p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="mb-0 opacity-75">Sản phẩm</h6>
+                    <h3 class="fw-bold mb-0">@ViewBag.SoLuongSanPham</h3>
+                </div>
+                <i class="bi bi-box-seam fs-1 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-stat bg-info text-white p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="mb-0 opacity-75">Khách hàng</h6>
+                    <h3 class="fw-bold mb-0">@ViewBag.KhachHang</h3>
+                </div>
+                <i class="bi bi-people fs-1 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3">
+        <h5 class="mb-0 fw-bold">Đơn hàng mới nhất</h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Mã ĐH</th>
+                    <th>Khách hàng</th>
+                    <th>Ngày đặt</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>#@item.maDonHang</td>
+                        <td>@item.tenNguoiNhan</td>
+                        <td>@item.ngayDat.Value.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td class="fw-bold text-danger">@((item.tongTien ?? 0).ToString("N0")) đ</td>
+                        <td>
+                            @if (item.trangThai == "Chờ xử lý")
+                            {<span class="badge bg-warning text-dark">Chờ xử lý</span> }
+                            else if (item.trangThai == "Đang giao")
+                            { <span class="badge bg-primary">Đang giao</span> }
+                            else if (item.trangThai == "Hoàn thành")
+                            { <span class="badge bg-success">Hoàn thành</span> }
+                            else
+                            { <span class="badge bg-secondary">@item.trangThai</span>}
+                        </td>
+                        <td>
+                            <a href="@Url.Action("ChiTietDonHang", "Admin_65131148", new { id = item.maDonHang })" class="btn btn-sm btn-outline-primary">Xem</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

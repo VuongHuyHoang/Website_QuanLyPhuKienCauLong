@@ -1,0 +1,115 @@
+﻿@using WebsiteBanPhuKienCauLong_65131148.Models
+@model List<CartItem_65131148>
+
+@{
+    ViewBag.Title = "Thanh toán";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    // Không cần dùng dictionary nữa vì thông tin đã có trong Model
+}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card shadow-sm border-0 p-4">
+                <h4 class="fw-bold mb-4 text-uppercase border-bottom pb-2">Thông tin giao hàng</h4>
+
+                @using (Html.BeginForm("XacNhanDatHang", "HangHoas_65131148", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-danger">Họ tên người nhận (*)</label>
+                        <input type="text"
+                               name="tenNguoiNhan"
+                               class="form-control"
+                               placeholder="Nhập họ tên người nhận"
+                               value="@Session["HoTen"]"
+                               required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-danger">
+                            Số điện thoại người nhận (*)
+                        </label>
+                        <input type="tel"
+                               name="soDienThoai"
+                               class="form-control"
+                               placeholder="VD: 0901234567"
+                               required
+                               pattern="[0-9]{9,11}"
+                               title="Vui lòng nhập số điện thoại hợp lệ (9-11 số)" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-danger">Địa chỉ nhận hàng (*)</label>
+                        <textarea name="diaChiGiao" class="form-control" rows="3" placeholder="Số nhà, tên đường, phường/xã..." required></textarea>
+                    </div>
+
+                    <div class="alert alert-info small mt-4">
+                        <i class="bi bi-info-circle me-2"></i> Phương thức thanh toán: <b>Thanh toán khi nhận hàng (COD)</b>.
+                    </div>
+
+                    <button type="submit" class="btn btn-danger btn-lg w-100 mt-3 shadow">
+                        XÁC NHẬN ĐẶT HÀNG
+                    </button>
+                }
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card border-0 bg-light p-4 shadow-sm h-100">
+                <h5 class="fw-bold mb-4">Tóm tắt đơn hàng</h5>
+
+                <div class="order-items overflow-auto" style="max-height: 300px;">
+                    @foreach (var item in Model)
+                    {
+                        <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+                            <div class="d-flex align-items-center">
+                                <img src="~/images/@item.Anh" class="rounded me-2" style="width: 40px; height: 40px; object-fit: contain; background: #fff;" />
+
+                                <div>
+                                    <div class="small fw-bold">
+                                        @item.TenHangHoa
+                                        @if (item.MaSize != null)
+                                        {
+                                            <span class="badge bg-secondary ms-1" style="font-size: 0.65rem;">@item.TenSize</span>
+                                        }
+                                    </div>
+                                    <div class="small text-muted">x @item.SoLuong</div>
+                                </div>
+                            </div>
+                            <div class="small fw-bold text-danger">
+                                @item.ThanhTien.ToString("N0") đ
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <hr />
+
+                <div class="mt-3">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Tiền hàng:</span>
+                        <span class="fw-bold">@ViewBag.TongTienHang.ToString("N0") đ</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Phí vận chuyển:</span>
+                        @if (ViewBag.PhiShip == 0)
+                        {
+                            <span class="text-success fw-bold">Miễn phí</span>
+                        }
+                        else
+                        {
+                            <span>@ViewBag.PhiShip.ToString("N0") đ</span>
+                        }
+                    </div>
+                    <div class="d-flex justify-content-between h5 mt-3 border-top pt-3">
+                        <span class="fw-bold">TỔNG THANH TOÁN:</span>
+                        <span class="text-danger fw-bold">@ViewBag.TongThanhToan.ToString("N0") đ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

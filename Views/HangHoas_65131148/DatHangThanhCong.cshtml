@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Đặt hàng thành công";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+<div class="container text-center py-5 my-5">
+    <div class="display-1 text-success mb-4"><i class="bi bi-check-circle-fill"></i></div>
+    <h1 class="fw-bold">ĐẶT HÀNG THÀNH CÔNG!</h1>
+    <p class="lead text-muted">Cảm ơn bạn đã tin tưởng Thiên Hương Badminton. Đơn hàng của bạn đang được xử lý.</p>
+    <div class="mt-4">
+        <a href="@Url.Action("TrangChu", "HangHoas_65131148")" class="btn btn-outline-dark px-4">Quay lại trang chủ</a>
+        <a href="@Url.Action("DonHang", "HangHoas_65131148")" class="btn btn-success px-4 ms-2">Xem lịch sử đơn hàng</a>
+    </div>
+</div>

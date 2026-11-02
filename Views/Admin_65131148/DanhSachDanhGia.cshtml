@@ -1,0 +1,184 @@
+﻿@model IEnumerable<WebsiteBanPhuKienCauLong_65131148.Models.DanhGiaSanPham>
+@{
+    ViewBag.Title = "Quản lý đánh giá";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show mb-4 border-0 shadow-sm" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i> @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm bg-primary text-white h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="fs-1 me-3"><i class="bi bi-chat-quote-fill"></i></div>
+                <div>
+                    <h6 class="mb-0 opacity-75">Tổng đánh giá</h6>
+                    <h2 class="fw-bold mb-0">@ViewBag.TongDanhGia</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm bg-success text-white h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="fs-1 me-3"><i class="bi bi-star-fill"></i></div>
+                <div>
+                    <h6 class="mb-0 opacity-75">Điểm trung bình</h6>
+                    <h2 class="fw-bold mb-0">@ViewBag.DiemTrungBinh / 5</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm bg-warning text-dark h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="fs-1 me-3"><i class="bi bi-heart-fill"></i></div>
+                <div>
+                    <h6 class="mb-0 opacity-75">Đánh giá 5 sao</h6>
+                    <h2 class="fw-bold mb-0">@ViewBag.DanhGia5Sao</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body py-3">
+        <form method="get" action="@Url.Action("DanhSachDanhGia")">
+            <div class="row g-2 align-items-center">
+                <div class="col-md-4">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                        <input type="text" name="search" value="@ViewBag.CurrentSearch" class="form-control" placeholder="Tìm theo tên SP hoặc tên khách..." />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select name="filterStar" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">-- Tất cả sao --</option>
+                        <option value="5" @(ViewBag.CurrentStar == 5 ? "selected" : "")>⭐⭐⭐⭐⭐ (Tuyệt vời)</option>
+                        <option value="4" @(ViewBag.CurrentStar == 4 ? "selected" : "")>⭐⭐⭐⭐ (Tốt)</option>
+                        <option value="3" @(ViewBag.CurrentStar == 3 ? "selected" : "")>⭐⭐⭐ (Bình thường)</option>
+                        <option value="2" @(ViewBag.CurrentStar == 2 ? "selected" : "")>⭐⭐ (Tệ)</option>
+                        <option value="1" @(ViewBag.CurrentStar == 1 ? "selected" : "")>⭐ (Rất tệ)</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary btn-sm w-100"><i class="bi bi-filter"></i> Lọc</button>
+                </div>
+                <div class="col-md-3 text-end">
+                    <a href="@Url.Action("DanhSachDanhGia")" class="btn btn-light btn-sm border"><i class="bi bi-arrow-counterclockwise"></i> Reset</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3">
+        <h5 class="fw-bold m-0 text-dark"><i class="bi bi-list-stars me-2"></i>Danh sách phản hồi</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light text-muted small text-uppercase">
+                    <tr>
+                        <th class="ps-4">Sản phẩm</th>
+                        <th>Khách hàng</th>
+                        <th>Đánh giá</th>
+                        <th width="40%">Nội dung</th>
+                        <th>Ngày gửi</th>
+                        <th class="text-end pe-4">Xử lý</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4">
+                                    <div class="d-flex align-items-center">
+                                        <img src="~/images/@item.HangHoa.anh" class="rounded border me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                                        <div class="small fw-bold text-dark" style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                            @item.HangHoa.tenHangHoa
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="fw-bold text-primary">@item.KhachHang.hoTen</div>
+                                </td>
+                                <td>
+                                    <div class="text-warning small" style="letter-spacing: -2px;">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= item.soSao)
+                                            {<i class="bi bi-star-fill"></i> }
+                                            else
+                                            { <i class="bi bi-star text-muted opacity-25"></i>}
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-muted small fst-italic">
+                                        "@item.binhLuan"
+                                    </div>
+                                </td>
+                                <td class="text-muted small">
+                                    @item.ngayDanhGia.Value.ToString("dd/MM/yyyy")<br>
+                                    @item.ngayDanhGia.Value.ToString("HH:mm")
+                                </td>
+                                <td class="text-end pe-4">
+                                    <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete(@item.maDanhGia)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-5 text-muted">
+                                <i class="bi bi-inbox fs-1 d-block mb-2 opacity-50"></i>
+                                Không tìm thấy đánh giá nào.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @if (ViewBag.TotalPages > 1)
+    {
+        <div class="card-footer bg-white py-3">
+            <nav>
+                <ul class="pagination justify-content-center mb-0 pagination-sm">
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("DanhSachDanhGia", new { page = i, search = ViewBag.CurrentSearch, filterStar = ViewBag.CurrentStar })">@i</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    }
+</div>
+
+<form id="deleteForm" action="@Url.Action("XoaDanhGia")" method="post" style="display:none;">
+    <input type="hidden" name="id" id="deleteId" />
+</form>
+
+<script>
+    function confirmDelete(id) {
+        if (confirm('Bạn có chắc chắn muốn xóa đánh giá này không? Hành động này không thể hoàn tác.')) {
+            document.getElementById('deleteId').value = id;
+            document.getElementById('deleteForm').submit();
+        }
+    }
+</script>

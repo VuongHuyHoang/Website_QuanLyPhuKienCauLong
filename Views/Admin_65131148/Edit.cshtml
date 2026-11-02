@@ -1,0 +1,113 @@
+﻿@model WebsiteBanPhuKienCauLong_65131148.Models.HangHoa
+
+@{
+    ViewBag.Title = "Cập nhật sản phẩm";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="d-flex align-items-center mb-4">
+    <a href="@Url.Action("DanhSachSanPham")" class="btn btn-light border rounded-circle me-3 shadow-sm">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+    <h4 class="fw-bold m-0 text-dark">Cập nhật sản phẩm: <span class="text-primary">@Model.tenHangHoa</span></h4>
+</div>
+
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                @using (Html.BeginForm("Edit", "Admin_65131148", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.maHangHoa)
+                    @* Giữ lại tên ảnh cũ nếu người dùng không chọn ảnh mới *@
+                    @Html.HiddenFor(model => model.anh)
+
+                    <div class="row g-4">
+                        <div class="col-md-4 text-center">
+                            <label class="form-label fw-bold d-block mb-3">Hình ảnh sản phẩm</label>
+
+                            <div class="position-relative d-inline-block group-upload">
+                                <img id="previewImage" src="~/images/@Model.anh"
+                                     class="rounded border shadow-sm mb-3"
+                                     style="width: 100%; height: 300px; object-fit: contain; background-color: #f8f9fa;"
+                                     alt="Ảnh sản phẩm" />
+
+                                <label for="anhFile" class="btn btn-sm btn-light border position-absolute bottom-0 end-0 mb-3 me-2 shadow-sm">
+                                    <i class="bi bi-camera-fill"></i> Thay ảnh
+                                </label>
+                                <input type="file" id="anhFile" name="anhFile" class="d-none" accept="image/*" onchange="previewFile(this);" />
+                            </div>
+                            <small class="text-muted d-block mt-2">Nhấn vào "Thay ảnh" để tải lên hình mới (nếu cần).</small>
+                        </div>
+
+                        <div class="col-md-8">
+                            <h5 class="fw-bold border-bottom pb-2 mb-3 text-secondary">Thông tin chung</h5>
+
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label class="form-label fw-semibold">Tên sản phẩm <span class="text-danger">*</span></label>
+                                    @Html.EditorFor(model => model.tenHangHoa, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập tên sản phẩm..." } })
+                                    @Html.ValidationMessageFor(model => model.tenHangHoa, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Giá bán (VNĐ)</label>
+                                    <div class="input-group">
+                                        @Html.EditorFor(model => model.gia, new { htmlAttributes = new { @class = "form-control fw-bold text-danger", type = "number" } })
+                                        <span class="input-group-text">đ</span>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.gia, "", new { @class = "text-danger small" })
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Tồn kho hiện tại</label>
+                                    @Html.EditorFor(model => model.soLuongTon, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", type = "number" } })
+                                    @Html.ValidationMessageFor(model => model.soLuongTon, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Danh mục</label>
+                                    @Html.DropDownList("maDanhMuc", null, htmlAttributes: new { @class = "form-select" })
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Thương hiệu</label>
+                                    @Html.DropDownList("maHang", null, htmlAttributes: new { @class = "form-select" })
+                                </div>
+                            </div>
+
+                            <h5 class="fw-bold border-bottom pb-2 mb-3 text-secondary">Mô tả chi tiết</h5>
+                            <div class="mb-4">
+                                @Html.TextAreaFor(model => model.moTa, new { @class = "form-control", rows = "5", placeholder = "Mô tả chi tiết về sản phẩm..." })
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2 pt-3 border-top">
+                                <a href="@Url.Action("DanhSachSanPham")" class="btn btn-outline-secondary px-4">Hủy bỏ</a>
+                                <button type="submit" class="btn btn-primary px-4 fw-bold">
+                                    <i class="bi bi-save me-2"></i> Lưu thay đổi
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function previewFile(input) {
+        var file = input.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                // Gán src của thẻ img thành dữ liệu ảnh vừa chọn
+                document.getElementById('previewImage').src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+</script>

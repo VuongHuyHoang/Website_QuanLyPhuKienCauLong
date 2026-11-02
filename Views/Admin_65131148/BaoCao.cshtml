@@ -1,0 +1,152 @@
+﻿@model WebsiteBanPhuKienCauLong_65131148.Models.BaoCao_65131148
+
+@{
+    ViewBag.Title = "Báo cáo thống kê";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold text-dark"><i class="bi bi-bar-chart-line-fill me-2"></i>Báo cáo kinh doanh</h4>
+
+    <form class="d-flex gap-2 bg-white p-2 rounded shadow-sm border" method="get">
+        <div class="d-flex align-items-center">
+            <span class="me-2 fw-bold small text-muted">Từ:</span>
+            <input type="date" name="fromDate" value="@Model.TuNgay.ToString("yyyy-MM-dd")" class="form-control form-control-sm" />
+        </div>
+        <div class="d-flex align-items-center">
+            <span class="mx-2 fw-bold small text-muted">Đến:</span>
+            <input type="date" name="toDate" value="@Model.DenNgay.ToString("yyyy-MM-dd")" class="form-control form-control-sm" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm fw-bold"><i class="bi bi-filter"></i> Lọc</button>
+    </form>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm text-white" style="background: linear-gradient(45deg, #4e73df, #224abe);">
+            <div class="card-body">
+                <h6 class="opacity-75">DOANH THU THỰC TẾ</h6>
+                <h3 class="fw-bold mb-0">@Model.TongDoanhThu.ToString("N0") đ</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm text-white" style="background: linear-gradient(45deg, #1cc88a, #13855c);">
+            <div class="card-body">
+                <h6 class="opacity-75">SẢN PHẨM ĐÃ BÁN</h6>
+                <h3 class="fw-bold mb-0">@Model.SanPhamDaBan</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm text-white" style="background: linear-gradient(45deg, #36b9cc, #258391);">
+            <div class="card-body">
+                <h6 class="opacity-75">TỔNG ĐƠN HÀNG</h6>
+                <h3 class="fw-bold mb-0">@Model.TongDonHang</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm text-white" style="background: linear-gradient(45deg, #e74a3b, #be2617);">
+            <div class="card-body">
+                <h6 class="opacity-75">ĐƠN HỦY</h6>
+                <h3 class="fw-bold mb-0">@Model.DonHangHuy</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 mb-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-white py-3 fw-bold">
+                <i class="bi bi-graph-up me-2 text-primary"></i>Biểu đồ Doanh thu theo ngày
+            </div>
+            <div class="card-body">
+                <canvas id="revenueChart" style="max-height: 350px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-white py-3 fw-bold">
+                <i class="bi bi-trophy-fill me-2 text-warning"></i>Top 5 Bán chạy nhất
+            </div>
+            <div class="card-body">
+                <canvas id="topProductChart" style="max-height: 350px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 1. Dữ liệu từ C# chuyển sang JS
+    var labelsNgay = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.LabelsNgay));
+    var dataDoanhThu = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.DataDoanhThu));
+
+    var labelsSP = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.LabelsSanPham));
+    var dataSP = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.DataSoLuongBan));
+
+    // 2. Vẽ Biểu đồ Doanh thu (Line Chart)
+    var ctx1 = document.getElementById('revenueChart').getContext('2d');
+    new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: labelsNgay,
+            datasets: [{
+                label: 'Doanh thu (VNĐ)',
+                data: dataDoanhThu,
+                borderColor: '#4e73df',
+                backgroundColor: 'rgba(78, 115, 223, 0.1)',
+                borderWidth: 2,
+                pointRadius: 4,
+                pointBackgroundColor: '#4e73df',
+                fill: true,
+                tension: 0.3 // Làm cong đường kẻ cho đẹp
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value.toLocaleString('vi-VN') + ' đ';
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // 3. Vẽ Biểu đồ Top Sản phẩm (Bar Chart)
+    var ctx2 = document.getElementById('topProductChart').getContext('2d');
+    new Chart(ctx2, {
+        type: 'pie', // Hoặc 'pie' / 'doughnut' nếu muốn biểu đồ tròn
+        data: {
+            labels: labelsSP,
+            datasets: [{
+                label: 'Số lượng bán',
+                data: dataSP,
+                backgroundColor: [
+                    '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b'
+                ],
+                borderRadius: 5
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            //indexAxis: 'y', // 'y' để biểu đồ nằm ngang (dễ đọc tên SP dài), bỏ dòng này nếu muốn cột đứng
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+</script>

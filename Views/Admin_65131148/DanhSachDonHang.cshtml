@@ -1,0 +1,143 @@
+﻿@model IEnumerable<WebsiteBanPhuKienCauLong_65131148.Models.DonHang>
+@{
+    ViewBag.Title = "Quản lý đơn hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="fw-bold text-dark m-0"><i class="bi bi-receipt-cutoff me-2"></i>Quản lý Đơn hàng</h4>
+</div>
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body py-3">
+        <form method="get" action="@Url.Action("DanhSachDonHang")">
+            <div class="row g-2 align-items-center">
+
+                <div class="col-md-3">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                        <input type="text" name="search" value="@ViewBag.Search" class="form-control" placeholder="Mã ĐH, Tên KH, SĐT..." />
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <select name="trangThai" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">-- Tất cả trạng thái --</option>
+                        <option value="Chờ xử lý" @(ViewBag.TrangThai == "Chờ xử lý" ? "selected" : "")>Chờ xử lý</option>
+                        <option value="Đang giao" @(ViewBag.TrangThai == "Đang giao" ? "selected" : "")>Đang giao</option>
+                        <option value="Hoàn thành" @(ViewBag.TrangThai == "Hoàn thành" ? "selected" : "")>Hoàn thành</option>
+                        <option value="Đã hủy" @(ViewBag.TrangThai == "Đã hủy" ? "selected" : "")>Đã hủy</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3 d-flex gap-1 align-items-center">
+                    <input type="date" name="tuNgay" value="@ViewBag.TuNgay" class="form-control form-control-sm" title="Từ ngày" />
+                    <span class="text-muted">-</span>
+                    <input type="date" name="denNgay" value="@ViewBag.DenNgay" class="form-control form-control-sm" title="Đến ngày" />
+                </div>
+
+                <div class="col-md-2">
+                    <select name="sortOrder" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">-- Sắp xếp --</option>
+                        <option value="gia_giam" @(ViewBag.SortOrder == "gia_giam" ? "selected" : "")>Giá: Cao -> Thấp</option>
+                        <option value="gia_tang" @(ViewBag.SortOrder == "gia_tang" ? "selected" : "")>Giá: Thấp -> Cao</option>
+                        <option value="ngay_tang" @(ViewBag.SortOrder == "ngay_tang" ? "selected" : "")>Ngày: Cũ nhất</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2 text-end">
+                    <button type="submit" class="btn btn-primary btn-sm fw-bold"><i class="bi bi-filter"></i> Lọc</button>
+                    <a href="@Url.Action("DanhSachDonHang")" class="btn btn-light btn-sm border" title="Xóa bộ lọc"><i class="bi bi-arrow-counterclockwise"></i></a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4">Mã ĐH</th>
+                        <th>Khách hàng</th>
+                        <th>Ngày đặt</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th class="text-end pe-4">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 fw-bold">#@item.maDonHang</td>
+                                <td>
+                                    <div class="fw-bold text-dark">@item.tenNguoiNhan</div>
+                                    <div class="small text-muted"><i class="bi bi-phone me-1"></i>@item.soDienThoai</div>
+                                </td>
+                                <td>@item.ngayDat.Value.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td class="text-danger fw-bold">@((item.tongTien ?? 0).ToString("N0")) đ</td>
+                                <td>
+                                    @if (item.trangThai == "Chờ xử lý")
+                                    {<span class="badge bg-warning text-dark">Chờ xử lý</span> }
+                                    else if (item.trangThai == "Đang giao")
+                                    { <span class="badge bg-primary">Đang giao</span> }
+                                    else if (item.trangThai == "Hoàn thành")
+                                    { <span class="badge bg-success">Hoàn thành</span> }
+                                    else
+                                    { <span class="badge bg-secondary">@item.trangThai</span>}
+                                </td>
+                                <td class="text-end pe-4">
+                                    <a href="@Url.Action("ChiTietDonHang", new { id = item.maDonHang })" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                        Xử lý <i class="bi bi-arrow-right"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-5 text-muted">
+                                <i class="bi bi-inbox fs-1 d-block mb-2 opacity-50"></i>
+                                Không tìm thấy đơn hàng nào phù hợp.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @if (ViewBag.TotalPages > 1)
+    {
+        <div class="card-footer bg-white py-3">
+            <nav>
+                <ul class="pagination justify-content-center mb-0">
+                    <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("DanhSachDonHang", new { page = ViewBag.CurrentPage - 1, search = ViewBag.Search, trangThai = ViewBag.TrangThai, sortOrder = ViewBag.SortOrder, tuNgay = ViewBag.TuNgay, denNgay = ViewBag.DenNgay })">
+                            <i class="bi bi-chevron-left"></i>
+                        </a>
+                    </li>
+
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("DanhSachDonHang", new { page = i, search = ViewBag.Search, trangThai = ViewBag.TrangThai, sortOrder = ViewBag.SortOrder, tuNgay = ViewBag.TuNgay, denNgay = ViewBag.DenNgay })">@i</a>
+                        </li>
+                    }
+
+                    <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("DanhSachDonHang", new { page = ViewBag.CurrentPage + 1, search = ViewBag.Search, trangThai = ViewBag.TrangThai, sortOrder = ViewBag.SortOrder, tuNgay = ViewBag.TuNgay, denNgay = ViewBag.DenNgay })">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    }
+</div>

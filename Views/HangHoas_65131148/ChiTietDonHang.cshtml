@@ -1,0 +1,72 @@
+﻿@model List<WebsiteBanPhuKienCauLong_65131148.Models.ChiTietDonHang>
+@{
+    var dh = ViewBag.DonHang as WebsiteBanPhuKienCauLong_65131148.Models.DonHang;
+    ViewBag.Title = "Chi tiết đơn hàng #" + dh.maDonHang;
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<div class="container my-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item" stle="text-decoration: none"><a href="@Url.Action("DonHang")">Đơn hàng</a></li>
+            <li class="breadcrumb-item active">Chi tiết #@dh.maDonHang</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3 fw-bold border-bottom">SẢN PHẨM ĐÃ MUA</div>
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <tbody>
+                            @foreach (var ct in Model)
+                            {
+                                <tr>
+                                    <td style="width: 80px;">
+                                        <img src="~/images/@ct.HangHoa.anh" class="img-fluid rounded" style="width: 60px; height: 60px; object-fit: contain;" />
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold">@ct.HangHoa.tenHangHoa</div>
+                                        <small class="text-muted">Đơn giá: @ct.HangHoa.gia.Value.ToString("N0") đ</small>
+                                        @if (ct.Size != null)
+                                        {
+                                            <div class="mt-1">
+                                                <span class="badge bg-light text-dark border">
+                                                    Size: <b>@ct.Size.tenSize</b>
+                                                </span>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td class="text-center">x @ct.soLuong</td>
+                                    <td class="text-end fw-bold text-danger pe-4"> @((ct.donGia * ct.soLuong).ToString("N0")) đ</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 bg-light mb-3">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3 border-bottom pb-2">Thông tin đơn hàng</h5>
+                    <p class="mb-1"><strong>Họ tên khách hàng:</strong> @dh.tenNguoiNhan</p>
+                    <p class="mb-1"><strong>Số điện thoại:</strong> @dh.soDienThoai</p>
+                    <p class="mb-1"><strong>Trạng thái:</strong> @dh.trangThai</p>
+                    <p class="mb-1"><strong>Ngày đặt:</strong> @dh.ngayDat</p>
+                    <p class="mb-3"><strong>Địa chỉ giao:</strong> <span class="text-muted">@dh.diaChiGiao</span></p>
+                    <hr />
+                    <div class="d-flex justify-content-between h5 fw-bold">
+                        <span>Tổng tiền:</span>
+                        <span class="text-danger">@dh.tongTien.Value.ToString("N0") đ</span>
+                    </div>
+                </div>
+            </div>
+            <button onclick="window.print()" class="btn btn-outline-secondary w-100">
+                <i class="bi bi-printer me-2"></i>In đơn hàng
+            </button>
+        </div>
+    </div>
+</div>

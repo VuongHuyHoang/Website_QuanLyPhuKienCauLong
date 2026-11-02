@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "DangKy";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 border p-4 shadow-sm bg-white">
+            <h3 class="text-center fw-bold mb-4">ĐĂNG KÝ THÀNH VIÊN</h3>
+            @using (Html.BeginForm("DangKy", "TaiKhoan_65131148", FormMethod.Post))
+            {
+                <div class="mb-3">
+                    <label class="form-label">Họ tên</label>
+                    <input type="text" name="hoTen" class="form-control" required />
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Số điện thoại</label>
+                        <input type="text" name="sdt" class="form-control" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Địa chỉ</label>
+                    <input type="text" name="diaChi" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Tên đăng nhập</label>
+                    <input type="text" name="username" class="form-control" required />
+                    <span class="text-danger">@ViewBag.Error</span>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Mật khẩu</label>
+                    <input type="password" name="matKhau" class="form-control" required />
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2">ĐĂNG KÝ NGAY</button>
+            }
+        </div>
+    </div>
+</div>

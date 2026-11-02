@@ -1,0 +1,69 @@
+﻿@model IEnumerable<WebsiteBanPhuKienCauLong_65131148.Models.KhachHang>
+@{
+    ViewBag.Title = "Danh sách khách hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h4 class="fw-bold mb-4 text-dark"><i class="bi bi-people-fill me-2"></i>Danh sách Khách hàng</h4>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3">
+        <form method="get" class="d-flex gap-2" style="max-width: 500px;">
+            <input type="text" name="search" value="@ViewBag.Search" class="form-control" placeholder="Tìm theo tên, email hoặc số điện thoại..." />
+            <button type="submit" class="btn btn-primary text-nowrap px-4"><i class="bi bi-search"></i> Tìm kiếm</button>
+        </form>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4">ID</th>
+                        <th>Họ và Tên</th>
+                        <th>Liên hệ</th>
+                        <th>Địa chỉ</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="ps-4 fw-bold">#@item.maKhachHang</td>
+                            <td>
+                                <div class="fw-bold text-dark">@item.hoTen</div>
+                            </td>
+                            <td>
+                                <div class="small"><i class="bi bi-envelope me-1"></i> @item.email</div>
+                                <div class="small text-muted"><i class="bi bi-phone me-1"></i> @item.sdt</div>
+                            </td>
+                            <td class="text-truncate" style="max-width: 200px;">@item.diaChi</td>
+                            <td>
+                                <a href="@Url.Action("ChiTietKhachHang", new { id = item.maKhachHang })"
+                                   class="btn btn-sm btn-outline-info rounded-pill px-3">
+                                    <i class="bi bi-eye"></i> Chi tiết
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @if (ViewBag.TotalPages > 1)
+    {
+        <div class="card-footer bg-white d-flex justify-content-end py-3">
+            <nav>
+                <ul class="pagination mb-0">
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("DanhSachKhachHang", new { page = i, search = ViewBag.Search })">@i</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    }
+</div>

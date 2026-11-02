@@ -1,0 +1,165 @@
+﻿@using WebsiteBanPhuKienCauLong_65131148.Models
+@model List<CartItem_65131148>
+
+@{
+    ViewBag.Title = "Giỏ hàng";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<div class="container my-5">
+    <h2 class="fw-bold mb-4 text-primary"><i class="bi bi-cart-fill me-2"></i>GIỎ HÀNG CỦA BẠN</h2>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        /* ... Giữ nguyên phần giỏ hàng trống ... */
+        <div class="alert alert-light border text-center py-5 shadow-sm">
+            <h4 class="text-muted">Giỏ hàng đang trống</h4>
+            <a href="@Url.Action("TrangSanPham", "HangHoas_65131148")" class="btn btn-primary mt-3 px-4">Mua sắm ngay</a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="table-responsive shadow-sm rounded border">
+                    <table class="table align-middle mb-0 bg-white">
+                        <thead class="table-dark">
+                            <tr>
+                                <th class="py-3">Sản phẩm</th>
+                                <th class="py-3">Đơn giá</th>
+                                <th class="py-3" style="width: 140px;">Số lượng</th>
+                                <th class="py-3">Thành tiền</th>
+                                <th class="py-3"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <a href="@Url.Action("Details", "HangHoas_65131148", new { id = item.MaHangHoa })">
+                                                <img src="~/images/@item.Anh" class="img-thumbnail me-3" style="width: 70px; height: 70px; object-fit: contain;" />
+                                            </a>
+
+                                            <div>
+                                                <a href="@Url.Action("Details", "HangHoas_65131148", new { id = item.MaHangHoa })"
+                                                   class="fw-bold text-dark text-decoration-none hover-primary">
+                                                    @item.TenHangHoa
+                                                </a>
+
+                                                @if (item.MaSize != null && item.DanhSachSize != null)
+                                                {
+                                                    <form action="@Url.Action("DoiSizeGioHang", "HangHoas_65131148")" method="post" class="mt-1">
+                                                        <input type="hidden" name="id" value="@item.MaHangHoa" />
+                                                        <input type="hidden" name="sizeCu" value="@item.MaSize" />
+
+                                                        <div class="input-group input-group-sm" style="width: 120px;">
+                                                            <span class="input-group-text bg-light text-muted" style="font-size: 0.75rem;">Size</span>
+                                                            <select name="sizeMoi" class="form-select form-select-sm"
+                                                                    style="font-size: 0.75rem; border-color: #dee2e6;"
+                                                                    onchange="this.form.submit()">
+                                                                @foreach (var s in item.DanhSachSize)
+                                                                {
+                                                                    <option value="@s.maSize" @(s.maSize == item.MaSize ? "selected" : "")>
+                                                                        @s.Size.tenSize
+                                                                    </option>
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </form>
+                                                }
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="fw-semibold">@item.DonGia.ToString("N0") đ</td>
+                                    <td>
+                                        <form action="@Url.Action("CapNhatGioHang", "HangHoas_65131148")" method="post" class="d-flex align-items-center justify-content-center border rounded p-1">
+                                            <input type="hidden" name="id" value="@item.MaHangHoa" />
+                                            <input type="hidden" name="maSize" value="@item.MaSize" />
+                                            <button type="submit" name="soLuong" value="@(item.SoLuong - 1)" class="btn btn-sm btn-link text-dark text-decoration-none px-2" @(item.SoLuong <= 1 ? "disabled" : "")><i class="bi bi-dash"></i></button>
+                                            <input type="text" value="@item.SoLuong" class="form-control form-control-sm text-center border-0 p-0 fw-bold bg-white" style="width: 30px;" readonly />
+                                            <button type="submit" name="soLuong" value="@(item.SoLuong + 1)" class="btn btn-sm btn-link text-dark text-decoration-none px-2"><i class="bi bi-plus"></i></button>
+                                        </form>
+                                    </td>
+                                    <td class="text-danger fw-bold">@item.ThanhTien.ToString("N0") đ</td>
+                                    <td>
+                                        <a href="@Url.Action("XoaGioHang", "HangHoas_65131148", new { id = item.MaHangHoa, maSize = item.MaSize })"
+                                           class="btn btn-sm btn-outline-danger border-0 rounded-circle"
+                                           onclick="return confirm('Xóa sản phẩm này?');">
+                                            <i class="bi bi-trash3-fill"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm p-4 sticky-top" style="top: 20px;">
+                    <h5 class="fw-bold mb-4 border-bottom pb-2">TÓM TẮT ĐƠN HÀNG</h5>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Tạm tính:</span>
+                        <span class="fw-bold">@ViewBag.TongTienHang.ToString("N0") đ</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-muted">Vận chuyển:</span>
+                        @if (ViewBag.PhiShip == 0)
+                        {
+                            <span class="text-success fw-bold">Miễn phí</span>
+                        }
+                        else
+                        {
+                            <span class="text-dark">@ViewBag.PhiShip.ToString("N0") đ</span>
+                        }
+                    </div>
+
+                    @if (ViewBag.PhiShip > 0)
+                    {
+                        <div class="alert alert-warning small py-1 px-2 mb-3">
+                            <i class="bi bi-truck"></i> Mua thêm <b>@((2000000 - (decimal)ViewBag.TongTienHang).ToString("N0")) đ</b> để được Freeship!
+                        </div>
+                    }
+
+                    <hr />
+
+                    <div class="d-flex justify-content-between mb-4 align-items-center">
+                        <span class="h5 fw-bold mb-0">Tổng cộng:</span>
+                        <span class="h4 text-danger fw-bold mb-0">
+                            @ViewBag.TongThanhToan.ToString("N0") đ
+                        </span>
+                    </div>
+
+                    @if (Session["User"] == null)
+                    {
+                        <a href="@Url.Action("DangNhap", "TaiKhoan_65131148")" class="btn btn-outline-primary w-100 mb-2 py-2">ĐĂNG NHẬP ĐỂ ĐẶT HÀNG</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("DatHang", "HangHoas_65131148")" class="btn btn-danger w-100 py-3 fw-bold shadow text-uppercase">TIẾN HÀNH ĐẶT HÀNG</a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .hover-primary:hover {
+        color: #E95211 !important; /* Màu xanh bootstrap */
+        text-decoration: underline !important;
+    }
+</style>

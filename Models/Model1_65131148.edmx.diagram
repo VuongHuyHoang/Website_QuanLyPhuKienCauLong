@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="2318433582374d6985306749d71a21c3" Name="Diagram1">
+        <EntityTypeShape EntityType="QuanLyBanPhuKienCauLong_65131148Model.ChiTietDonHang" Width="1.5" PointX="5.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanLyBanPhuKienCauLong_65131148Model.DanhGiaSanPham" Width="1.5" PointX="8.25" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanLyBanPhuKienCauLong_65131148Model.DanhMuc" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanLyBanPhuKienCauLong_65131148Model.DonHang" Width="1.5" PointX="3" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanLyBanPhuKienCauLong_65131148Model.Hang" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanLyBanPhuKienCauLong_65131148Model.HangHoa" Width="1.5" PointX="3" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanLyBanPhuKienCauLong_65131148Model.KhachHang" Width="1.5" PointX="0.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanLyBanPhuKienCauLong_65131148Model.NhanVien" Width="1.5" PointX="0.75" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanLyBanPhuKienCauLong_65131148Model.sysdiagrams" Width="1.5" PointX="5.75" PointY="7.5" IsExpanded="true" />
+        <AssociationConnector Association="QuanLyBanPhuKienCauLong_65131148Model.FK__ChiTietDo__maDon__21B6055D" ManuallyRouted="false" />
+        <AssociationConnector Association="QuanLyBanPhuKienCauLong_65131148Model.FK__ChiTietDo__maHan__22AA2996" ManuallyRouted="false" />
+        <AssociationConnector Association="QuanLyBanPhuKienCauLong_65131148Model.FK__DanhGiaSa__maHan__286302EC" ManuallyRouted="false" />
+        <AssociationConnector Association="QuanLyBanPhuKienCauLong_65131148Model.FK__DanhGiaSa__maKha__276EDEB3" ManuallyRouted="false" />
+        <AssociationConnector Association="QuanLyBanPhuKienCauLong_65131148Model.FK__HangHoa__maDanhM__182C9B23" ManuallyRouted="false" />
+        <AssociationConnector Association="QuanLyBanPhuKienCauLong_65131148Model.FK__DonHang__maKhach__1DE57479" ManuallyRouted="false" />
+        <AssociationConnector Association="QuanLyBanPhuKienCauLong_65131148Model.FK__DonHang__maNhanV__1ED998B2" ManuallyRouted="false" />
+        <AssociationConnector Association="QuanLyBanPhuKienCauLong_65131148Model.FK__HangHoa__maHang__35BCFE0A" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="QuanLyBanPhuKienCauLong_65131148Model.HangHoa_Size" Width="1.5" PointX="5.5" PointY="1.25" />
+        <EntityTypeShape EntityType="QuanLyBanPhuKienCauLong_65131148Model.Size" Width="1.5" PointX="3.25" PointY="0.5" />
+        <AssociationConnector Association="QuanLyBanPhuKienCauLong_65131148Model.FK__HangHoa_S__maHan__4D94879B" />
+        <AssociationConnector Association="QuanLyBanPhuKienCauLong_65131148Model.FK__HangHoa_S__maSiz__4E88ABD4" />
+        <AssociationConnector Association="QuanLyBanPhuKienCauLong_65131148Model.FK_ChiTietDonHang_Size" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

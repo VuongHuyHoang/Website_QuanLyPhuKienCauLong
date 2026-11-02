@@ -1,0 +1,93 @@
+﻿@model IEnumerable<WebsiteBanPhuKienCauLong_65131148.Models.Hang>
+@{
+    ViewBag.Title = "Quản lý Thương hiệu";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold text-dark"><i class="bi bi-tags-fill me-2"></i>Quản lý Thương hiệu</h4>
+</div>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <table class="table table-hover align-middle mb-0 text-center">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Mã Hãng</th>
+                            <th>Tên Thương Hiệu</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-muted fw-bold">@item.maHang</td>
+                                <td>
+                                    <span class="badge bg-secondary fs-6">@item.tenHang</span>
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("XoaHang", new { id = item.maHang })"
+                                       class="btn btn-sm btn-outline-danger border-0"
+                                       onclick="return confirm('Bạn có chắc muốn xóa hãng này?');">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (ViewBag.TotalPages > 1)
+            {
+                <div class="card-footer bg-white d-flex justify-content-center py-3">
+                    <nav>
+                        <ul class="pagination mb-0">
+                            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                            {
+                                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                    <a class="page-link" href="@Url.Action("DanhSachHang", new { page = i, search = ViewBag.Search })">@i</a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white fw-bold">
+                <i class="bi bi-plus-circle me-2"></i>Thêm nhanh
+            </div>
+            <div class="card-body">
+                <form action="@Url.Action("TaoHangNhanh")" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Tên Thương Hiệu</label>
+                        <input type="text" name="tenHang" class="form-control" required placeholder="Ví dụ: Yonex, Lining..." />
+                        <div class="form-text text-muted">Nhập tên hãng sản xuất mới.</div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 fw-bold">
+                        <i class="bi bi-save me-2"></i> Lưu lại
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

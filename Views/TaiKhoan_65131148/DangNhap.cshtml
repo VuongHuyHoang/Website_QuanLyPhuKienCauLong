@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "DangNhap";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4 border p-4 shadow-sm bg-white">
+            <h3 class="text-center fw-bold mb-4">ĐĂNG NHẬP</h3>
+
+            @using (Html.BeginForm("DangNhap", "TaiKhoan_65131148", FormMethod.Post))
+            {
+                <div class="mb-3">
+                    <label class="form-label">Tài khoản</label>
+                    <input type="text" name="username" class="form-control" required />
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Mật khẩu</label>
+                    <input type="password" name="matKhau" class="form-control" required />
+                </div>
+
+                @* Sửa lỗi tại đây: Bỏ dấu @ trước if vì đang nằm trong khối { } của BeginForm *@
+                if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger p-2 small">
+                        @ViewBag.Error
+                    </div>
+                }
+
+                <button type="submit" class="btn btn-dark w-100 py-2">ĐĂNG NHẬP</button>
+                <div class="text-center mt-3 small">
+                    Chưa có tài khoản? <a href="@Url.Action("DangKy", "TaiKhoan_65131148")">Đăng ký tại đây</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

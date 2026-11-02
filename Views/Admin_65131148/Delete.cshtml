@@ -1,0 +1,61 @@
+﻿@model WebsiteBanPhuKienCauLong_65131148.Models.HangHoa
+
+@{
+    ViewBag.Title = "Xóa sản phẩm";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-danger text-white fw-bold py-3">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>XÁC NHẬN XÓA SẢN PHẨM
+            </div>
+            <div class="card-body p-4">
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-warning border-danger text-danger fw-bold">
+                        <i class="bi bi-x-circle-fill me-2"></i> @Html.ValidationSummary(true)
+                    </div>
+                }
+
+                <h5 class="text-center mb-4 text-dark">Bạn có chắc chắn muốn xóa vĩnh viễn sản phẩm này không?</h5>
+
+                <div class="row mb-4 border rounded p-3 mx-1 bg-light">
+                    <div class="col-md-4 text-center">
+                        <img src="~/images/@Model.anh" class="img-fluid rounded border bg-white"
+                             style="max-height: 150px; object-fit: contain;" />
+                    </div>
+                    <div class="col-md-8 d-flex flex-column justify-content-center">
+                        <h4 class="fw-bold text-primary">@Model.tenHangHoa</h4>
+                        <div class="text-muted mb-1">Mã SP: #@Model.maHangHoa</div>
+                        <div class="text-danger fw-bold fs-5">@((Model.gia ?? 0).ToString("N0")) đ</div>
+                        <div class="mt-2">
+                            <span class="badge bg-secondary">@Model.DanhMuc.tenDanhMuc</span>
+                            <span class="badge bg-info text-dark">@Model.Hang.tenHang</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-info small">
+                    <i class="bi bi-info-circle-fill me-1"></i>
+                    Hành động này sẽ xóa sản phẩm khỏi cơ sở dữ liệu và xóa ảnh khỏi máy chủ. Không thể hoàn tác.
+                </div>
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="d-flex justify-content-center gap-3 mt-4">
+                        <a href="@Url.Action("DanhSachSanPham")" class="btn btn-secondary px-4">
+                            <i class="bi bi-arrow-left me-2"></i>Hủy bỏ
+                        </a>
+                        <button type="submit" class="btn btn-danger px-4 fw-bold">
+                            <i class="bi bi-trash-fill me-2"></i>Xác nhận xóa
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

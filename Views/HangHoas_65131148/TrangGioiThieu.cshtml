@@ -1,0 +1,146 @@
+﻿@{
+    ViewBag.Title = "Về chúng tôi";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<style>
+    /* Hiệu ứng card */
+    .feature-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+
+    /* Icon box */
+    .icon-box-circle {
+        width: 80px;
+        height: 80px;
+        background-color: #f8f9fa;
+        color: #f26522; /* Màu cam chủ đạo */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        margin: 0 auto 20px auto;
+        font-size: 2rem;
+        transition: all 0.3s;
+    }
+
+    .feature-card:hover .icon-box-circle {
+        background-color: #f26522;
+        color: white;
+    }
+
+    /* Team Member ảnh */
+    .team-img {
+        height: 300px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+</style>
+
+
+<div class="container my-5">
+    <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <img src="~/Images/anhgioithieu.jpg"
+                 class="img-fluid rounded-3 shadow-lg" alt="Câu chuyện thương hiệu">
+        </div>
+        <div class="col-lg-6 ps-lg-5">
+            <h6 class="text-primary fw-bold text-uppercase">Về chúng tôi</h6>
+            <h2 class="fw-bold mb-4">Hơn cả một cửa hàng, chúng tôi là người bạn đồng hành</h2>
+            <p class="text-muted mb-4">
+                Được thành lập từ năm 2025 với niềm đam mê cháy bỏng dành cho bộ môn cầu lông, chúng tôi hiểu rằng một cây vợt tốt hay một đôi giày êm ái không chỉ là dụng cụ, mà là người bạn đồng hành giúp bạn thăng hoa trong từng cú đánh.
+            </p>
+            <p class="text-muted mb-4">
+                Tại đây, chúng tôi cam kết mang đến những sản phẩm <strong>chính hãng 100%</strong> từ các thương hiệu hàng đầu thế giới như Yonex, Lining, Victor... với mức giá cạnh tranh nhất thị trường.
+            </p>
+
+            <div class="row g-3">
+                <div class="col-6">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-check-circle-fill text-success me-2 fs-5"></i>
+                        <span class="fw-bold">Sản phẩm chính hãng</span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-check-circle-fill text-success me-2 fs-5"></i>
+                        <span class="fw-bold">Bảo hành uy tín</span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-check-circle-fill text-success me-2 fs-5"></i>
+                        <span class="fw-bold">Tư vấn chuyên sâu</span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-check-circle-fill text-success me-2 fs-5"></i>
+                        <span class="fw-bold">Giao hàng hỏa tốc</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h6 class="text-primary fw-bold text-uppercase">Tại sao chọn chúng tôi ?</h6>
+        <h2 class="fw-bold">Giá trị khác biệt</h2>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-4 text-center feature-card">
+                <div class="icon-box-circle">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+                <h4 class="fw-bold mb-3">Chất Lượng Đỉnh Cao</h4>
+                <p class="text-muted">
+                    Nói không với hàng giả, hàng nhái. Mọi sản phẩm đều có tem kiểm định và nguồn gốc xuất xứ rõ ràng.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-4 text-center feature-card">
+                <div class="icon-box-circle">
+                    <i class="bi bi-truck"></i>
+                </div>
+                <h4 class="fw-bold mb-3">Giao Hàng Siêu Tốc</h4>
+                <p class="text-muted">
+                    Đóng gói cẩn thận - Giao hàng nhanh chóng. Miễn phí vận chuyển cho các đơn hàng đạt giá trị tối thiểu.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-4 text-center feature-card">
+                <div class="icon-box-circle">
+                    <i class="bi bi-headset"></i>
+                </div>
+                <h4 class="fw-bold mb-3">Hỗ Trợ 24/7</h4>
+                <p class="text-muted">
+                    Đội ngũ tư vấn viên am hiểu kỹ thuật, sẵn sàng giải đáp mọi thắc mắc về vợt, cước và kỹ thuật chơi.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="py-5 text-white text-center mt-5" style="background: linear-gradient(45deg, #f26522, #ff9f43);">
+    <div class="container">
+        <h2 class="fw-bold mb-3">Sẵn sàng nâng tầm cuộc chơi?</h2>
+        <p class="lead mb-4 opacity-75">Đừng chần chừ, hãy chọn ngay cho mình vũ khí đắc lực nhất tại cửa hàng của chúng tôi.</p>
+        <a href="@Url.Action("TrangSanPham", "HangHoas_65131148")" class="btn btn-light text-primary fw-bold rounded-pill px-5 py-3 shadow-lg btn-lg">
+            <i class="bi bi-cart-fill me-2"></i> Mua sắm ngay
+        </a>
+    </div>
+</section>

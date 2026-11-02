@@ -1,0 +1,117 @@
+﻿@model WebsiteBanPhuKienCauLong_65131148.Models.DonHang
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var chiTiet = ViewBag.ChiTiet as List<WebsiteBanPhuKienCauLong_65131148.Models.ChiTietDonHang>;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex align-items-center">
+        <a href="@Url.Action("DanhSachDonHang")" class="btn btn-light border rounded-circle me-3">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+        <h4 class="fw-bold m-0">Đơn hàng #@Model.maDonHang</h4>
+        <span class="badge bg-secondary ms-3 align-self-center">@Model.ngayDat.Value.ToString("dd/MM/yyyy HH:mm")</span>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white py-3 fw-bold border-bottom">
+                <i class="bi bi-person-lines-fill me-2 text-primary"></i>Thông tin giao hàng
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="small text-muted text-uppercase fw-bold">Người nhận</label>
+                    <div class="fw-bold">@Model.tenNguoiNhan</div>
+                </div>
+                <div class="mb-3">
+                    <label class="small text-muted text-uppercase fw-bold">Số điện thoại</label>
+                    <div>@Model.soDienThoai</div>
+                </div>
+                <div>
+                    <label class="small text-muted text-uppercase fw-bold">Địa chỉ</label>
+                    <div>@Model.diaChiGiao</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-warning text-dark py-3 fw-bold border-bottom">
+                <i class="bi bi-gear-fill me-2"></i>Cập nhật trạng thái
+            </div>
+            <div class="card-body">
+                <form action="@Url.Action("CapNhatTrangThai")" method="post">
+                    <input type="hidden" name="id" value="@Model.maDonHang" />
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Trạng thái đơn hàng</label>
+                        <select name="trangThai" class="form-select">
+                            <option value="Chờ xử lý" @(Model.trangThai == "Chờ xử lý" ? "selected" : "")>Chờ xử lý</option>
+                            <option value="Đang giao" @(Model.trangThai == "Đang giao" ? "selected" : "")>Đang giao (Đang vận chuyển)</option>
+                            <option value="Hoàn thành" @(Model.trangThai == "Hoàn thành" ? "selected" : "")>Hoàn thành (Đã giao & Thu tiền)</option>
+                            <option value="Đã hủy" @(Model.trangThai == "Đã hủy" ? "selected" : "")>Hủy đơn hàng</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-dark w-100 fw-bold">
+                        <i class="bi bi-save me-2"></i> Cập nhật ngay
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 fw-bold border-bottom">
+                <i class="bi bi-bag-check-fill me-2 text-success"></i>Danh sách sản phẩm
+            </div>
+            <div class="card-body p-0">
+                <table class="table align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4">Sản phẩm</th>
+                            <th>Đơn giá</th>
+                            <th class="text-center">SL</th>
+                            <th class="text-end pe-4">Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in chiTiet)
+                        {
+                            <tr>
+                                <td class="ps-4">
+                                    <div class="d-flex align-items-center">
+                                        <img src="~/images/@item.HangHoa.anh" class="rounded border me-3" style="width: 40px; height: 40px; object-fit: contain;" />
+                                        <div>
+                                            <div class="fw-bold">@item.HangHoa.tenHangHoa</div>
+                                            @if (item.Size != null)
+                                            {
+                                                <span class="badge bg-light text-dark border">Size: @item.Size.tenSize</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>@item.donGia.ToString("N0")</td>
+                                <td class="text-center">@item.soLuong</td>
+                                <td class="text-end pe-4 fw-bold">@((item.donGia * item.soLuong).ToString("N0"))</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot class="bg-light">
+                        <tr>
+                            <td colspan="3" class="text-end text-muted pe-3">Phí vận chuyển:</td>
+                            <td class="text-end pe-4">@((Model.phiShip ?? 0).ToString("N0")) đ</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-end fw-bold h5 pe-3 text-dark">Tổng thanh toán:</td>
+                            <td class="text-end pe-4 fw-bold h5 text-danger">@((Model.tongTien ?? 0).ToString("N0")) đ</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

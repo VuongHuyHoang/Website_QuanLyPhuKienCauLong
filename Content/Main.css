@@ -1,0 +1,322 @@
+﻿/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ===== HEADER ===== */
+/* Hộp người dùng (Sửa lỗi mờ tên) */
+/* Làm đẹp thanh Header */
+.header {
+    background-color: #1a1d20; /* Màu nền tối sang trọng */
+    padding: 10px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logo màu trắng nổi bật */
+.logo a {
+    color: #ffffff !important;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* --- 1. TÙY CHỈNH NÚT ĐĂNG NHẬP (Sửa lỗi hover) --- */
+.btn-custom-login {
+    color: #e0e0e0;
+    border: 1px solid #6c757d;
+    background-color: transparent !important;
+    transition: all 0.3s ease;
+}
+
+    .btn-custom-login:hover {
+        color: #ffffff !important; /* Thêm !important để ép màu trắng */
+        border-color: #ffffff;
+        /* Tăng độ đậm của nền khi hover để thấy rõ sự thay đổi */
+        background-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 8px rgba(255, 255, 255, 0.3); /* Thêm hiệu ứng phát sáng nhẹ */
+    }
+
+/* --- 2. TÙY CHỈNH NÚT ĐĂNG KÝ (Sửa lỗi hover) --- */
+.btn-custom-register {
+    /* Màu Xanh Dương chủ đạo */
+    background-color: #0d6efd;
+    border: 1px solid #0d6efd;
+    color: #fff !important;
+    transition: all 0.3s ease;
+}
+
+    .btn-custom-register:hover {
+        /* Đổi sang màu xanh đậm hơn hẳn khi hover */
+        background-color: #0b5ed7 !important;
+        border-color: #0a58ca !important;
+        color: #fff !important;
+        transform: translateY(-2px); /* Nảy lên cao hơn xíu */
+        box-shadow: 0 4px 8px rgba(13, 110, 253, 0.4); /* Bóng đổ xanh */
+    }
+
+/* --- 3. SỬA MÀU HOVER CHO MENU & GIỎ HÀNG --- */
+/* Màu chữ mặc định */
+.header a.text-white {
+    color: #e0e0e0 !important; /* Trắng ngà dịu mắt */
+    transition: color 0.2s;
+}
+
+    /* Màu khi di chuột vào Link/Giỏ hàng */
+    .header a.text-white:hover,
+    .logo a:hover {
+        color: #66b2ff !important; /* Chuyển sang màu xanh dương nhạt (hoặc vàng nhạt #ffc107) */
+        text-decoration: none;
+    }
+
+/* Hộp tìm kiếm */
+.search-box input {
+    border-radius: 4px 0 0 4px;
+    border: 1px solid #ced4da;
+    padding: 6px 12px;
+}
+
+.search-box button {
+    border-radius: 0 4px 4px 0;
+    background-color: #ffc107; /* Màu vàng nổi bật */
+    border: none;
+    padding: 6px 12px;
+}
+
+.search-box input:focus {
+    box-shadow: none !important;
+    background-color: #fff;
+}
+
+/* Hiệu ứng hover cho nút tìm kiếm */
+.search-box button:hover {
+    background-color: #e0a800; /* Màu vàng đậm hơn */
+    transition: 0.3s;
+}
+
+/* Hộp người dùng (Sửa lỗi mờ tên) */
+.user-box a {
+    color: #ffffff !important; /* Ép chữ màu trắng */
+    text-decoration: none;
+    margin-left: 15px;
+    font-size: 14px;
+}
+
+.user-box .dropdown-toggle::after {
+    color: #ffffff; /* Mũi tên dropdown màu trắng */
+}
+
+/* Dropdown menu (Hình image_66810b.png) */
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    padding: 8px 0;
+}
+.dropdown {
+    position: relative;
+}
+.dropdown-item {
+    padding: 8px 40px;
+    font-size: 14px;
+}
+
+    .dropdown-item:hover {
+        background-color: #f8f9fa;
+        color: #007bff !important;
+    }
+/* Màu mặc định cho các mục trong menu xổ xuống */
+.dropdown-menu .dropdown-item {
+    color: #333333 !important; /* Màu xám đậm/đen để hiện rõ trên nền trắng */
+    padding: 8px 20px;
+    margin-left:0;
+}
+
+    /* Màu khi di chuột vào (hover) */
+    .dropdown-menu .dropdown-item:hover {
+        background-color: #f8f9fa; /* Nền xám nhạt */
+        color: #007bff !important; /* Chữ chuyển sang màu xanh dương */
+    }
+
+/* Riêng nút đăng xuất màu đỏ nếu bạn muốn giữ như hình */
+.dropdown-menu .text-danger {
+    color: #dc3545 !important;
+}
+/* Đảm bảo tên người dùng luôn hiện màu trắng trên nền đen */
+.user-box .dropdown-toggle {
+    color: #ffffff !important;
+    text-decoration: none;
+}
+
+/* Đảm bảo các icon đi kèm cũng hiện rõ */
+.user-box i {
+    color: #ffffff;
+}
+/* ===== MENU ===== */
+
+    .main-menu ul {
+        display: flex;
+        list-style: none;
+        padding: 10px 0;
+    }
+
+    .main-menu li {
+        margin-right: 25px;
+    }
+
+    .main-menu a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+        .main-menu a:hover {
+            text-decoration: underline;
+        }
+
+/* ===== CONTENT ===== */
+.main-content {
+    min-height: 500px;
+}
+/* ===== PROMO BOX CÓ BO VIỀN ===== */
+.promo-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    height: 100%;
+}
+
+.promo-icon {
+    font-size: 32px;
+    color: #ff6a00;
+    margin-right: 14px;
+}
+
+.promo-title {
+    margin: 0;
+    font-weight: 700;
+    color: #ff6a00;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.promo-text {
+    margin: 0;
+    font-size: 13px;
+    color: #555;
+}
+/* ===== carosel ===== */
+/* Chỉ tác động carousel sản phẩm */
+#productCarousel .carousel-control-prev,
+#productCarousel .carousel-control-next {
+    width: 60px;
+}
+
+#productCarousel .carousel-control-prev {
+    left: -70px; /* đẩy sang trái */
+}
+
+#productCarousel .carousel-control-next {
+    right: -70px; /* đẩy sang phải */
+}
+
+/* Đổi icon sang màu đen */
+#productCarousel .carousel-control-prev-icon,
+#productCarousel .carousel-control-next-icon {
+    filter: invert(1); /* trắng → đen */
+}
+/* ===== Sản phẩm ===== */
+
+.carousel-inner {
+    display: flex;
+}
+
+.carousel-item {
+    display: flex;
+    align-items: stretch;
+}
+
+    .carousel-item > .row {
+        width: 100%;
+    }
+
+.product-card {
+    border: 1px solid #eee;
+    padding: 10px;
+    border-radius: 8px;
+    background: #fff;
+}
+    .product-card:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        transform: translateY(-2px);
+    }
+
+
+.product-img {
+    height: 180px;
+    object-fit: contain;
+}
+
+.product-card .title {
+    font-size: 14px;
+    min-height: 40px;
+    margin: 10px 0;
+}
+
+.product-card .price {
+    font-size: 15px;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    background-color: #222;
+    color: #ccc;
+    margin-top: 0px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    padding: 40px 0;
+}
+
+.footer-col h4 {
+    color: white;
+    margin-bottom: 15px;
+}
+
+.footer-col ul {
+    list-style: none;
+}
+
+    .footer-col ul li {
+        margin-bottom: 8px;
+    }
+
+.footer-col a {
+    color: #ccc;
+    text-decoration: none;
+}
+
+    .footer-col a:hover {
+        color: white;
+    }
+
+.footer-bottom {
+    background-color: #111;
+    text-align: center;
+    padding: 12px 0;
+    font-size: 14px;
+}
+
+.btn-cart {
+    margin-left: -12px;
+}

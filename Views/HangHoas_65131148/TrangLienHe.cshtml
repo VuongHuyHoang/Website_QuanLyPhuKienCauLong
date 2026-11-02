@@ -1,0 +1,198 @@
+﻿@{
+    ViewBag.Title = "Liên hệ với chúng tôi";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<style>
+    .contact-section {
+        /* Thay đường dẫn bên dưới bằng ảnh map của bạn */
+        background-image: url('@Url.Content("~/Images/map.png")');
+
+        background-position: center; /* Căn giữa ảnh */
+        background-attachment: fixed; /* Hiệu ứng Parallax (Ảnh đứng yên khi cuộn trang) - Rất xịn */
+        background-repeat: no-repeat;
+        min-height: 300px; /* Chiều cao tối thiểu */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Lớp phủ màu đen mờ để chữ trắng đọc được */
+    .contact-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(15, 23, 42, 0.7); /* Màu xanh đen mờ 70% */
+        z-index: 1;
+    }
+    /* --- TÁI SỬ DỤNG STYLE CỦA FORM TƯ VẤN --- */
+    .form-contact-input {
+        border-radius: 50px; /* Bo tròn */
+        padding: 12px 20px;
+        border: 1px solid #dee2e6;
+        margin-bottom: 20px;
+        background-color: #f8f9fa; /* Màu nền xám nhẹ */
+        transition: all 0.3s;
+    }
+
+        .form-contact-input:focus {
+            background-color: #fff;
+            border-color: #f26522; /* Màu cam chủ đạo */
+            box-shadow: 0 0 0 0.2rem rgba(242, 101, 34, 0.25);
+        }
+
+    .btn-contact-submit {
+        background-color: #f26522;
+        color: white;
+        border-radius: 50px;
+        padding: 12px 50px;
+        font-weight: bold;
+        border: none;
+        transition: all 0.3s;
+        text-transform: uppercase;
+    }
+
+        .btn-contact-submit:hover {
+            background-color: #d95316;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(242, 101, 34, 0.3);
+            color: white;
+        }
+
+    /* --- STYLE CHO KHỐI THÔNG TIN --- */
+    .contact-info-box {
+        background: #fff;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        height: 100%;
+    }
+
+    .icon-wrapper {
+        width: 50px;
+        height: 50px;
+        background-color: #fff4f0; /* Màu cam nhạt */
+        color: #f26522;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin-right: 15px;
+    }
+
+    .map-container iframe {
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+</style>
+
+<section class="contact-section position-relative">
+    <div class="contact-overlay"></div>
+
+    <div class="container position-relative z-2 text-center text-white py-5">
+        <h2 class="fw-bold mb-3">Liên hệ với chúng tôi</h2>
+        <p class="mb-4">Chúng tôi luôn sẵn sàng lắng nghe và hỗ trợ bạn 24/7</p>
+    </div>
+</section>
+
+<div class="container mb-5">
+    <div class="row g-5">
+
+        <div class="col-lg-6">
+            <div class="contact-info-box mb-4">
+                <h4 class="fw-bold mb-4">Thông tin cửa hàng</h4>
+
+                <div class="d-flex align-items-start mb-4">
+                    <div class="icon-wrapper"><i class="bi bi-geo-alt-fill"></i></div>
+                    <div>
+                        <h6 class="fw-bold mb-1">Địa chỉ</h6>
+                        <p class="text-muted mb-0">Số 02, Nguyễn Đình Chiểu, Vĩnh Thọ, Nha Trang, Khánh Hòa</p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start mb-4">
+                    <div class="icon-wrapper"><i class="bi bi-telephone-fill"></i></div>
+                    <div>
+                        <h6 class="fw-bold mb-1">Hotline</h6>
+                        <p class="text-muted mb-0">0378 123 456 (Zalo)</p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start mb-4">
+                    <div class="icon-wrapper"><i class="bi bi-envelope-fill"></i></div>
+                    <div>
+                        <h6 class="fw-bold mb-1">Email hỗ trợ</h6>
+                        <p class="text-muted mb-0">cskh@phukiencaulong.vn</p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start">
+                    <div class="icon-wrapper"><i class="bi bi-clock-fill"></i></div>
+                    <div>
+                        <h6 class="fw-bold mb-1">Giờ mở cửa</h6>
+                        <p class="text-muted mb-0">08:00 - 21:00 (Tất cả các ngày trong tuần)</p>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <div class="col-lg-6">
+            <div class="contact-info-box">
+                <h3 class="fw-bold mb-3">Gửi tin nhắn</h3>
+                <p class="text-muted mb-4">Bạn có thắc mắc về sản phẩm hoặc cần tư vấn? Hãy để lại thông tin, chúng tôi sẽ liên hệ lại ngay!</p>
+
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success border-0 bg-success bg-opacity-10 text-success mb-4">
+                        <i class="bi bi-check-circle-fill me-2"></i> @TempData["Success"]
+                    </div>
+                }
+
+                <form action="@Url.Action("TrangLienHe")" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        <input type="text" name="hoTen" class="form-control form-contact-input" placeholder="Họ và tên của bạn" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" name="sdt" class="form-control form-contact-input" placeholder="Số điện thoại" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="email" name="email" class="form-control form-contact-input" placeholder="Email của bạn">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" name="tieuDe" class="form-control form-contact-input" placeholder="Tiêu đề (VD: Tư vấn vợt, Bảo hành...)" required>
+                    </div>
+
+                    <div class="form-group">
+                        <textarea name="noiDung" class="form-control form-contact-input" rows="5" style="border-radius: 20px;" placeholder="Nội dung cần hỗ trợ..." required></textarea>
+                    </div>
+
+                    <div class="mt-2">
+                        <button type="submit" class="btn btn-contact-submit w-100">
+                            <i class="bi bi-send-fill me-2"></i> Gửi liên hệ
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="text-end mt-3">
+                <img src="~/images/shuttlecock-deco.png" alt="" style="width: 100px; opacity: 0.8; transform: rotate(30deg);">
+            </div>
+        </div>
+
+    </div>
+</div>

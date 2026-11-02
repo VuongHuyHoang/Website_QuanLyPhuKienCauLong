@@ -1,0 +1,401 @@
+﻿@model WebsiteBanPhuKienCauLong_65131148.Models.HangHoa
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    var sizes = ViewBag.Sizes as List<WebsiteBanPhuKienCauLong_65131148.Models.HangHoa_Size>;
+}
+
+<div class="container my-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("TrangChu", "HangHoas_65131148")">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("TrangSanPham", "HangHoas_65131148")">Sản phẩm</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.tenHangHoa</li>
+        </ol>
+    </nav>
+
+    <div class="row g-5">
+        <div class="col-md-6">
+            <div class="product-image-container p-4 border rounded shadow-sm bg-white text-center">
+                <img src="~/images/@Model.anh"
+                     class="img-fluid rounded"
+                     id="mainProductImage"
+                     style="max-height: 500px; object-fit: contain;"
+                     alt="@Model.tenHangHoa" />
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="product-info">
+                <div class="mb-2">
+                    <span class="badge bg-primary px-3 py-2">@Model.Hang.tenHang</span>
+                    <span class="badge bg-secondary px-3 py-2">@Model.DanhMuc.tenDanhMuc</span>
+                </div>
+
+                <h1 class="display-6 fw-bold mb-2">@Model.tenHangHoa</h1> <div class="d-flex align-items-center mb-4">
+                    <div class="me-2">
+                        @{
+                            double diem = ViewBag.DiemTrungBinh ?? 0;
+                            int starFull = (int)diem; // Phần nguyên (Ví dụ 4.5 thì là 4)
+                            bool hasHalfStar = (diem - starFull) >= 0.5; // Có nửa sao không?
+                        }
+
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= starFull)
+                            {
+                                <i class="bi bi-star-fill text-warning"></i> }
+                            else if (i == starFull + 1 && hasHalfStar)
+                            {
+                                <i class="bi bi-star-half text-warning"></i> }
+                            else
+                            {
+                                <i class="bi bi-star-fill text-secondary opacity-25"></i>}
+                        }
+                    </div>
+
+                    <span class="text-muted small border-start ps-2 ms-2">
+                        @if (ViewBag.SoLuotDanhGia > 0)
+                        {
+                            <strong class="text-dark">@diem.ToString("0.0")</strong> <span>(@ViewBag.SoLuotDanhGia đánh giá)</span>
+                        }
+                        else
+                        {
+                            <span>Chưa có đánh giá</span>
+                        }
+                    </span>
+                </div>
+
+                <div class="price-box mb-4 p-3 bg-light rounded">
+                    <h2 class="text-danger fw-bold mb-0">
+                        @(Model.gia?.ToString("N0") ?? "0") <small>VNĐ</small>
+                    </h2>
+                </div>
+
+                <div class="inventory-status mb-4">
+                    <p class="mb-1">
+                        <strong>Trạng thái:</strong>
+                        @if (sizes != null && sizes.Any())
+                        {
+                            <span class="text-success">
+                                <i class="bi bi-check-circle-fill"></i>
+                                Còn hàng (nhiều size)
+                            </span>
+                        }
+                        else if (Model.soLuongTon > 0)
+                        {
+                            <span class="text-success">
+                                <i class="bi bi-check-circle-fill"></i>
+                                Còn hàng (@Model.soLuongTon sản phẩm)
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">
+                                <i class="bi bi-x-circle-fill"></i>
+                                Hết hàng
+                            </span>
+                        }
+
+                    </p>
+                </div>
+
+                <div class="description-box mb-4">
+                    <h5 class="fw-bold border-bottom pb-2">Mô tả sản phẩm</h5>
+                    <p class="text-muted" style="line-height: 1.6;">
+                        @Model.moTa
+                    </p>
+                </div>
+
+                @if (sizes != null && sizes.Any())
+                {
+                    <div class="mb-4">
+                        <label class="fw-bold mb-2 d-block">Chọn kích cỡ</label>
+                        <select id="maSize" class="form-select form-select-lg">
+                            <option value="">-- Chọn size --</option>
+                            @foreach (var s in sizes)
+                            {
+                                <option value="@s.maSize">
+                                    @s.Size.tenSize (Còn @s.soLuongTon)
+                                </option>
+                            }
+                        </select>
+                    </div>
+                }
+
+                <div class="d-grid gap-2 d-md-flex mt-4">
+                    <button type="button"
+                            class="btn btn-danger btn-lg px-5 flex-grow-1"
+                            onclick="themGioHang(@Model.maHangHoa)">
+                        <i class="bi bi-cart-plus-fill me-2"></i> MUA NGAY
+                    </button>
+                </div>
+
+                <hr class="my-4" />
+
+                <div class="admin-actions mt-3">
+                    <a href="@Url.Action("TrangSanPham", "HangHoas_65131148")" class="btn btn-outline-secondary btn-sm ms-2">
+                        <i class="bi bi-arrow-left"></i> Quay lại danh sách
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5 pt-4 border-top">
+        <div class="col-12">
+            <h4 class="fw-bold mb-4">Thông số kỹ thuật</h4>
+            <table class="table table-striped w-50">
+                <tr>
+                    <th width="30%">Thương hiệu</th>
+                    <td>@Model.Hang.tenHang</td>
+                </tr>
+                <tr>
+                    <th>Dòng sản phẩm</th>
+                    <td>@Model.DanhMuc.tenDanhMuc</td>
+                </tr>
+                <tr>
+                    <th>Mã sản phẩm</th>
+                    <td>#@Model.maHangHoa</td>
+                </tr>
+                <tr>
+                    <th>Bảo hành</th>
+                    <td>Chính hãng theo chính sách của @Model.Hang.tenHang</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+            <h4 class="fw-bold"><i class="bi bi-chat-square-text-fill me-2 text-primary"></i>Đánh giá từ khách hàng</h4>
+        </div>
+        <div class="card-body">
+
+            @if (Session["User"] != null)
+            {
+                if (ViewBag.DaMua == true)
+                {
+                    <div class="review-form mb-5 p-4 bg-light rounded-3">
+                        <h6 class="fw-bold mb-3">Viết đánh giá của bạn</h6>
+                        <form action="@Url.Action("GuiDanhGia", "HangHoas_65131148")" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="maHangHoa" value="@Model.maHangHoa" />
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold me-3">Bạn chấm mấy sao?</label>
+                                <div class="rating-stars">
+                                    <input type="radio" name="soSao" value="5" id="star5" checked hidden><label for="star5"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" name="soSao" value="4" id="star4" hidden><label for="star4"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" name="soSao" value="3" id="star3" hidden><label for="star3"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" name="soSao" value="2" id="star2" hidden><label for="star2"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" name="soSao" value="1" id="star1" hidden><label for="star1"><i class="bi bi-star-fill"></i></label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <textarea name="noiDung" class="form-control" rows="3" placeholder="Chia sẻ cảm nhận về sản phẩm..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary px-4 fw-bold"><i class="bi bi-send me-2"></i>Gửi đánh giá</button>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-warning border-0 shadow-sm d-flex align-items-center mb-5" role="alert">
+                        <div class="bg-warning bg-opacity-25 rounded-circle p-3 me-3 text-warning">
+                            <i class="bi bi-cart-x-fill fs-3"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold text-dark mb-1">Chưa thể đánh giá sản phẩm này</h6>
+                            <p class="mb-0 small text-muted">
+                                Bạn cần mua sản phẩm này và đơn hàng ở trạng thái <span class="badge bg-success">Hoàn thành</span> mới có thể viết đánh giá.
+                            </p>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-info d-flex align-items-center mb-4">
+                    <i class="bi bi-info-circle-fill fs-4 me-3"></i>
+                    <div>
+                        Bạn cần <a href="@Url.Action("DangNhap", "TaiKhoan_65131148")" class="fw-bold text-decoration-underline">đăng nhập</a> để viết đánh giá cho sản phẩm này.
+                    </div>
+                </div>
+            }
+
+            <div id="review-list">
+            </div>
+
+            <div class="text-center mt-4">
+                <button id="btnLoadMore" class="btn btn-outline-primary rounded-pill px-4" onclick="loadReviews()">
+                    Xem thêm đánh giá <i class="bi bi-chevron-down ms-1"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .product-image-container {
+        transition: all 0.3s ease;
+        background-color: #f8f9fa;
+    }
+
+        .product-image-container:hover {
+            transform: scale(1.02);
+        }
+
+    .breadcrumb-item a {
+        text-decoration: none;
+        color: #6c757d;
+    }
+
+    .badge {
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* CSS đảo ngược để làm chức năng chọn sao */
+    .rating-stars {
+        display: inline-flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+    }
+
+        .rating-stars label {
+            cursor: pointer;
+            color: #ddd;
+            font-size: 1.5rem;
+            padding: 0 5px;
+            transition: color 0.2s;
+        }
+
+            .rating-stars input:checked ~ label,
+            .rating-stars label:hover,
+            .rating-stars label:hover ~ label {
+                color: #f1c40f; /* Màu vàng sao */
+            }
+
+    /* Avatar giả lập */
+    .avatar-circle {
+        width: 45px;
+        height: 45px;
+        background-color: #e9ecef;
+        color: #555;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 18px;
+    }
+</style>
+
+<script>
+    function themGioHang(maHangHoa) {
+        var sizeSelect = document.getElementById("maSize");
+
+        if (sizeSelect) {
+            if (sizeSelect.value === "") {
+                Swal.fire({
+                    title: 'Chưa chọn kích cỡ!',
+                    text: 'Vui lòng chọn size sản phẩm bạn muốn mua.',
+                    icon: 'warning',
+                    confirmButtonText: 'Đã hiểu',
+                    confirmButtonColor: '#dc3545' // Màu đỏ cho hợp tông web
+                });
+                return;
+            }
+            window.location.href =
+                '@Url.Action("ThemGioHang", "HangHoas_65131148")'
+                + '?id=' + maHangHoa
+                + '&maSize=' + sizeSelect.value;
+        } else {
+            // Sản phẩm không có size
+            window.location.href =
+                '@Url.Action("ThemGioHang", "HangHoas_65131148")'
+                + '?id=' + maHangHoa;
+        }
+    }
+</script>
+
+<script>
+     var currentPage = 1;
+ var maHangHoa = @Model.maHangHoa;
+
+ // Load lần đầu khi trang vừa chạy
+ document.addEventListener("DOMContentLoaded", function() {
+     loadReviews();
+ });
+
+ function loadReviews() {
+     var btn = document.getElementById('btnLoadMore');
+     btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang tải...';
+
+     // Gọi về Controller lấy dữ liệu JSON
+     fetch(`/HangHoas_65131148/TaiThemDanhGia?maHangHoa=${maHangHoa}&page=${currentPage}`)
+         .then(response => response.json())
+         .then(data => {
+             var container = document.getElementById('review-list');
+
+             if (data.length === 0) {
+                 if(currentPage === 1) {
+                     container.innerHTML = '<p class="text-center text-muted my-4">Chưa có đánh giá nào. Hãy là người đầu tiên!</p>';
+                 }
+                 btn.style.display = 'none'; // Ẩn nút nếu hết dữ liệu
+                 return;
+             }
+
+             // Duyệt qua từng đánh giá và tạo HTML
+             data.forEach(item => {
+                 var starHtml = '';
+                 for(var i=1; i<=5; i++) {
+                     starHtml += i <= item.SoSao
+                         ? '<i class="bi bi-star-fill text-warning"></i> '
+                         : '<i class="bi bi-star text-muted"></i> ';
+                 }
+
+                 // Lấy chữ cái đầu tên khách
+                 var firstChar = item.TenKH.charAt(0).toUpperCase();
+
+                 var html = `
+                     <div class="d-flex border-bottom py-3 fade-in">
+                         <div class="me-3">
+                             <div class="avatar-circle">${firstChar}</div>
+                         </div>
+                         <div class="flex-grow-1">
+                             <div class="d-flex justify-content-between align-items-center mb-1">
+                                 <h6 class="fw-bold mb-0">${item.TenKH}</h6>
+                                 <small class="text-muted">${item.Ngay}</small>
+                             </div>
+                             <div class="mb-2 small">
+                                 ${starHtml}
+                             </div>
+                             <p class="mb-0 text-dark">${item.NoiDung}</p>
+                         </div>
+                     </div>
+                 `;
+                 container.innerHTML += html;
+             });
+
+             // Nếu trả về ít hơn 5 dòng -> Hết dữ liệu -> Ẩn nút
+             if (data.length < 5) {
+                 btn.style.display = 'none';
+             } else {
+                 btn.innerHTML = 'Xem thêm đánh giá <i class="bi bi-chevron-down ms-1"></i>';
+                 currentPage++; // Tăng trang để lần sau bấm sẽ tải trang tiếp theo
+             }
+         })
+         .catch(error => {
+             console.error('Lỗi:', error);
+             btn.innerHTML = 'Thử lại';
+         });
+ }
+</script>
+
